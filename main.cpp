@@ -38,29 +38,14 @@ public:
         graph->fillVertices(this);
     }
 
-    ListGraph(MatrixGraph *graph) {
-        /*for (int i = 0; i < VerticesCount(); ++i) {
-            std::vector<int> nextVertices;
-            GetNextVertices(i, nextVertices);
-            for (int j = 0; j < nextVertices.size(); ++j) {
-                graph->AddEdge(i + 1, nextVertices[j] + 1);
-            }
-
-        }*/
-    }
-
     void fillVertices(ListGraph *graph) override {
         graph->verticesGraph = this->verticesGraph;
     }
 
+    void fillMatrixGraph(MatrixGraph *graphM, ListGraph *graphL);
+
     void fillVertices(MatrixGraph *graph) override {
-        for (int i = 0; i < VerticesCount(); ++i) {
-            std::vector<int> nextVertices;
-            GetNextVertices(i, nextVertices);
-            for (int j = 0; j < nextVertices.size(); ++j) {
-                //graph->AddEdge(i + 1, nextVertices[j] + 1);
-            }
-        }
+        fillMatrixGraph(graph, this);
     }
 
     ListGraph(ListGraph *graph) {
@@ -138,10 +123,6 @@ public:
     MatrixGraph(IGraph *graph) {
         graph->fillVertices(this);
     }
-
- /*   MatrixGraph(ListGraph *graph) {
-        graph->fillVertices(this);
-    }*/
 
     void fillVertices(ListGraph *graph) override {
         for (int i = 0; i < VerticesCount(); ++i) {
@@ -238,9 +219,15 @@ public:
     }
 };
 
-
-
-
+void ListGraph::fillMatrixGraph(MatrixGraph *graphM, ListGraph *graphL) {
+    for (int i = 0; i < graphL->VerticesCount(); ++i) {
+        std::vector<int> nextVertices;
+        graphL->GetNextVertices(i, nextVertices);
+        for (int j = 0; j < nextVertices.size(); ++j) {
+            graphM->AddEdge(i + 1, nextVertices[j] + 1);
+        }
+    }
+}
 
 int main() {
 
